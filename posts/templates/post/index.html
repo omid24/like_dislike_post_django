@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container m-5">
+    <div class="row">
+
+    {% for post in posts %}
+        <div class="col-6 col-lg-3 col-md-3 col-sm-6">
+
+
+                    <div class="card" style="width: 100%">
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.description }}</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                                        <br>
+
+                                                <br>
+
+                        {% if post.getLikedUser %}
+                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-up like-btn" style="color:blue;"></i>{{ post.getLikeCount }}
+                        {% else %}
+                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-up like-btn" style="color:blue;"></i>{{ post.getLikeCount }}
+                        {% endif %}
+
+
+                        {% if post.getDisLikedUser %}
+                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-down dislike-btn" style="color:red;"></i>{{ post.getDislikeCount }}
+                        {% else %}
+                            <i  data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-down dislike-btn" style="color:red;"></i>{{ post.getDislikeCount }}
+                        {% endif %}
+
+
+
+
+
+
+
+                    </div>
+
+                        </div>
+                        </div>
+
+
+
+
+    {% endfor%}
+    </div>
+</div>
+
+
+
+{% endblock %}
