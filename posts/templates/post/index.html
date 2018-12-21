@@ -12,7 +12,7 @@
 
 
                     <div class="card" style="width: 100%">
-                        
+
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
                             <p class="card-text">{{ post.description }}</p>
@@ -22,16 +22,16 @@
                                                 <br>
 
                         {% if post.getLikedUser %}
-                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-up like-btn" style="color:blue;"></i>{{ post.getLikeCount }}
+                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-up like-btn" style="color:blue;"></i><span class="likes-result">{{ post.getLikeCount }}</span>
                         {% else %}
-                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-up like-btn" style="color:blue;"></i>{{ post.getLikeCount }}
+                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-up like-btn" style="color:blue;"></i><span class="likes-result">{{ post.getLikeCount }}</span>
                         {% endif %}
 
 
                         {% if post.getDisLikedUser %}
-                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-down dislike-btn" style="color:red;"></i>{{ post.getDislikeCount }}
+                            <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-down dislike-btn" style="color:red;"></i><span class="dislikes-result">{{ post.getDislikeCount }}</span>
                         {% else %}
-                            <i  data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-down dislike-btn" style="color:red;"></i>{{ post.getDislikeCount }}
+                            <i  data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-down dislike-btn" style="color:red;"></i><span class="dislikes-result">{{ post.getDislikeCount }}</span>
                         {% endif %}
 
 

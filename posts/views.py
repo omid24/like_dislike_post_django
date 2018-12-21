@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .models import Post, LikeDislike
 from django.views.generic.base import RedirectView
 from django.contrib.auth.models import User
@@ -38,16 +39,21 @@ def post_view(request):
                 return None
 
             # # Post.objects.get_rating_by_ajax(post_id)
-            #
-            # rating = [] # store count like and dislike
-            #
-            # count_likes     = LikeDislike.objects.filter(post__id=post_id, rating_action=1).count()
-            # count_dislikes  = LikeDislike.objects.filter(post__id=post_id, rating_action=0).count()
-            #
-            # rating.append(count_likes)
-            # rating.append(count_dislikes)
-            #
-            # return json.dumps(rating)
+
+            # store count like and dislike
+
+            count_likes     = LikeDislike.objects.filter(post__id=post_id, rating_action=1).count()
+            count_dislikes  = LikeDislike.objects.filter(post__id=post_id, rating_action=0).count()
+
+
+
+
+            # rating.dict(count_likes=count_likes, count_dislikes=count_dislikes)
+
+            return JsonResponse({
+                'likes': count_likes,
+                'dislikes': count_dislikes
+            })
 
 
 

@@ -104,7 +104,29 @@ class LikeDislikeManager(models.Manager):
         )
 
         return obj, created
+        # print(obj_user)
+        # print(post_id)
+        # fields_dict = {
+        #     'obj_user': obj_user,
+        #     'post_id': post_id
+        # }
+        #
+        # from django.db import connection
+        # with connection.cursor() as cursor:
+        #     cursor.execute("""INSERT INTO LikeDislike set
+        #                     user=%(obj_user)s,
+        #                     post_id=%(post_id)s,
+        #                     # rating_action=1 ON DUPLICATE KEY UPDATE rating_action = 1""", **fields_dict)
+        #
 
+        # from django.db import connection, transaction
+        # cursor = connection.cursor()
+        # sql = """INSERT INTO LikeDislike set
+        #                 user=%(obj_user)s,
+        #                 post_id=%(post_id)s,
+        #                 rating_action=1 ON DUPLICATE KEY UPDATE rating_action = 1"""
+        # cursor.executemany(sql, fields_dict)
+        # transaction.commit_unless_managed()
 
     def update_or_create_dislike(self, post_id, user_id, *args, **kwargs):
         """
