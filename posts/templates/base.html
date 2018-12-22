@@ -39,7 +39,7 @@
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"> -->
-    // <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script> -->
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
@@ -52,6 +52,7 @@
 
     $(document).ready(function () {
 
+        // likes and unlike ajax
         $('.like-btn').on('click', function () {
 
             var post_id = $(this).data('postid');// $(this) => .like-btn when cliked
@@ -72,30 +73,6 @@
                 action = 'unlike';
                 console.log(action);
             }
-     //        $.ajaxSetup({
-     //              beforeSend: function(xhr, settings) {
-     //                function getCookie(name) {
-     //                    var cookieValue = null;
-     //                      if (document.cookie && document.cookie != '') {
-     //             var cookies = document.cookie.split(';');
-     //             for (var i = 0; i < cookies.length; i++) {
-     //                 var cookie = jQuery.trim(cookies[i]);
-     //                 // Does this cookie string begin with the name we want?
-     //                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
-     //                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-     //                     break;
-     //                 }
-     //             }
-     //         }
-     //         return cookieValue;
-     //     }
-     //     if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-     //         // Only send the token to relative URLs i.e. locally.
-     //         xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-     //     }
-     // }
-     //    });
-
              $.ajax({
                 url:'',
                 type:'POST',
@@ -105,22 +82,15 @@
                     'user_id':user_id,
                     csrfmiddlewaretoken:$('[name=csrfmiddlewaretoken]').val()
                 },
-                // beforeSend:function (xhr, settings) {
-                //     if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                //         xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                //     }
-                //
-                //     if ({{is_login_user|lower}} == true) {
-                //         alert('اکی');
-                //     }else{
-                //
-                //         alert('به حساب کاربری خود وارد شوید');
-                //     }
-                // },
+                beforeSend:function (xhr, settings) {
+                  if ({{is_login_user|lower}} == false) {
+                      alert('به حساب کاربری خود وارد شوید');
+                  }
+                },
                 success:function (data) {
 
                     // result = JSON.parse(data)
-                    console.log(data)
+                    // console.log(data)
 
                     if (action == 'like') {
 
@@ -133,9 +103,86 @@
                         $clicked_btn.removeClass('fas');
                         $clicked_btn.addClass('far');
                     }
-                    // $clicked_btn.siblings('span.likes-result').text(data.likes)
-                    var likez = $('.likes-result')
-                    likez.text(data.likes)
+                    var liked  = $clicked_btn.siblings('span.likes-result')
+                    liked.text(data.likes)
+
+                    var liked  = $clicked_btn.siblings('span.dislikes-result')
+                    liked.text(data.dislikes)
+                    // var likez = $('.likes-result')
+                    // likez.text(data.likes)
+                    var change_to_dislike = $clicked_btn.siblings('i.dislike-btn')
+                    change_to_dislike.removeClass('fas').addClass('far')
+                }
+            })
+
+        })
+
+//-----------------------------------------------------------------------------------------------------------
+
+        // dislike and undislike ajax
+        $('.dislike-btn').on('click', function () {
+
+            var post_id = $(this).data('postid');// $(this) => .like-btn when cliked
+            var user_id = $(this).data('userid');
+
+            $clicked_btn = $(this); // when be clicked on .like-btn class
+
+            // if is dislike(don't like) or like icon is blank
+            if($clicked_btn.hasClass('far')) {
+
+                // after the click, send 'like' with action
+                action = 'dislike';
+                console.log(action);
+
+            } else if ($clicked_btn.hasClass('fas')) { // if is like
+
+                // after the click, send 'unlike' with action
+                action = 'undislike';
+                console.log(action);
+            }
+             $.ajax({
+                url:'',
+                type:'POST',
+                data:{
+                    'action':action,
+                    'post_id':post_id,
+                    'user_id':user_id,
+                    csrfmiddlewaretoken:$('[name=csrfmiddlewaretoken]').val()
+                },
+                beforeSend:function (xhr, settings) {
+
+                    if ({{is_login_user|lower}} == false) {
+                        alert('به حساب کاربری خود وارد شوید');
+                    }
+                },
+                success:function (data) {
+
+                    // result = JSON.parse(data)
+                    // console.log(data)
+
+                    if (action == 'dislike') {
+
+                        $clicked_btn.removeClass('far');
+                        $clicked_btn.addClass('fas');
+
+
+                    }else if(action == 'undislike') {
+
+                        $clicked_btn.removeClass('fas');
+                        $clicked_btn.addClass('far');
+                    }
+                    var liked  = $clicked_btn.siblings('span.likes-result')
+                    liked.text(data.likes)
+
+                    var disliked  = $clicked_btn.siblings('span.dislikes-result')
+                    disliked.text(data.dislikes)
+
+
+                    var change_to_dislike = $clicked_btn.siblings('i.like-btn')
+                    change_to_dislike.removeClass('fas').addClass('far')
+
+                    // var likez = $('.likes-result')
+                    // likez.text(data.likes)
                 }
             })
 

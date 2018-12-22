@@ -20,7 +20,7 @@
                                                         <br>
 
                                                 <br>
-
+                      {% if user.is_authenticated %}
                         {% if post.getLikedUser %}
                             <i data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="fas fa-thumbs-up like-btn" style="color:blue;"></i><span class="likes-result">{{ post.getLikeCount }}</span>
                         {% else %}
@@ -33,8 +33,10 @@
                         {% else %}
                             <i  data-postid="{{ post.id }}" data-userid="{{ login_user_id }}" class="far fa-thumbs-down dislike-btn" style="color:red;"></i><span class="dislikes-result">{{ post.getDislikeCount }}</span>
                         {% endif %}
-
-
+                      {% else %}
+                        <i data-postid="{{ post.id }}" class="far fa-thumbs-up like-btn" style="color:blue;"></i><span class="likes-result">{{ post.getLikeCount }}</span>
+                        <i  data-postid="{{ post.id }}" class="far fa-thumbs-down dislike-btn" style="color:red;"></i><span class="dislikes-result">{{ post.getDislikeCount }}</span>
+                      {% endif %}
 
 
 
