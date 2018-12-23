@@ -56,10 +56,6 @@ def post_view(request):
             })
 
 
-
-
-
-
     context = {
         'posts' : posts,
         'is_login_user': is_login_user

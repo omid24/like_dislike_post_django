@@ -82,7 +82,7 @@
                     'user_id':user_id,
                     csrfmiddlewaretoken:$('[name=csrfmiddlewaretoken]').val()
                 },
-                beforeSend:function (xhr, settings) {
+                beforeSend:function () {
                   if ({{is_login_user|lower}} == false) {
                       alert('به حساب کاربری خود وارد شوید');
                   }

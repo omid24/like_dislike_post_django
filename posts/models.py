@@ -7,21 +7,23 @@ import json
 
 class PostManager(models.Manager):
 
-    def get_rating_by_ajax(post_id=None):
-
-        rating = {} # store count like and dislike
-
-        count_likes     = LikeDislike.objects.filter(post__id=post_id, rating_action=1).count()
-        count_dislikes  = LikeDislike.objects.filter(post__id=post_id, rating_action=0).count()
-
-        rating.dict(count_likes=count_likes, count_dislikes=count_dislikes)
-
-        return json.dumps(rating)
+    # def get_rating_by_ajax(post_id=None):
+    #
+    #     rating = {} # store count like and dislike
+    #
+    #     count_likes     = LikeDislike.objects.filter(post__id=post_id, rating_action=1).count()
+    #     count_dislikes  = LikeDislike.objects.filter(post__id=post_id, rating_action=0).count()
+    #
+    #     rating.dict(count_likes=count_likes, count_dislikes=count_dislikes)
+    #
+    #     return json.dumps(rating)
+    pass
 
 
 
 # Create your models here.
 class Post(models.Model):
+
     title       = models.CharField(max_length=128)
     description = models.TextField()
 
@@ -54,7 +56,7 @@ class Post(models.Model):
         # current_user = auth.get_user(request) => for view
         """
         select * from like_dislike, post where
-        like_dislike.rating_action = 0 and
+        like_dislike.rating_action = 1 and
         post.id = post.id and user.id=user.id
         """
         count_liked = LikeDislike.objects.filter(rating_action=1, user=user, post__id=self.id).count()
@@ -100,7 +102,7 @@ class LikeDislikeManager(models.Manager):
         obj, created = self.get_queryset().update_or_create(
             post_id = post_id,
             user = obj_user,
-            rating_action = 1
+            defaults = {'rating_action' : 1},
         )
 
         return obj, created
@@ -117,7 +119,7 @@ class LikeDislikeManager(models.Manager):
         #                     user=%(obj_user)s,
         #                     post_id=%(post_id)s,
         #                     # rating_action=1 ON DUPLICATE KEY UPDATE rating_action = 1""", **fields_dict)
-        #
+
 
         # from django.db import connection, transaction
         # cursor = connection.cursor()
@@ -127,6 +129,7 @@ class LikeDislikeManager(models.Manager):
         #                 rating_action=1 ON DUPLICATE KEY UPDATE rating_action = 1"""
         # cursor.executemany(sql, fields_dict)
         # transaction.commit_unless_managed()
+
 
     def update_or_create_dislike(self, post_id, user_id, *args, **kwargs):
         """
@@ -140,7 +143,7 @@ class LikeDislikeManager(models.Manager):
         obj, created = self.get_queryset().update_or_create(
             post_id = post_id,
             user = obj_user,
-            rating_action = str(0)
+            defaults = {'rating_action' : 0},
         )
         return obj, created
 
