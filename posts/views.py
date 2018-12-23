@@ -1,10 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Post, LikeDislike
 from django.views.generic.base import RedirectView
 from django.contrib.auth.models import User
 from django.views.generic.list import ListView
-from django.shortcuts import redirect
 import json
 
 
